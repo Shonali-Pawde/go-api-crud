@@ -11,4 +11,4 @@ RUN go install -v ./...
 
 EXPOSE 10000
 
-ENTRYPOINT [ "/go-crud" ]
+CMD["go","run","main.go"]

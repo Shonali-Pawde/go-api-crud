@@ -1,22 +1,40 @@
-version: '3.1'
-
+version: '3'
 services:
   web:
-    restart: always
-    image: go-mysql-crud
-    ports:
-      - 10000:10000
-    links:
-      - mysql
-    environment:
-      - "DB_PORT=3306"
-      - "DB_HOST=mysql"
-      - "DB_NAME=goblog"
-      - "DB_PASS=Mysqlroot123"
+    # Path to dockerfile.
+    # '.' represents the current directory in which
+    # docker-compose.yml is present.
+    build: .
 
-  mysql:
-    image: mysql:8.0
+    # Mapping of container port to host
+
     ports:
-      - 3306:3306
+      - "10000:10000"
+    # Mount volume
     volumes:
-      - /mysql:/var/lib/mysql
+      - "/SimpleCURD/:/git_go_api"
+
+    # Link database container to app container
+    # for reachability.
+    links:
+      - "database:football"
+
+  database:
+
+    # image to fetch from docker hub
+    image:
+
+    # Environment variables for startup script
+    # container will use these variables
+    # to start the container with these define variables.
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_USER=root"
+      - "MYSQL_PASSWORD=Mysqlroot123"
+      - "MYSQL_DATABASE=football"
+    # Mount init.sql file to automatically run
+    # and create tables for us.
+    # everything in docker-entrypoint-initdb.d folder
+    # is executed as soon as container is up nd running.
+    volumes:
+      - "/SimpleCURD/db/init.sql:/docker-entrypoint-initdb.d/init.sql"
