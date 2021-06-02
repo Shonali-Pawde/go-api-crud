@@ -22,7 +22,7 @@ services:
   database:
 
     # image to fetch from docker hub
-    image:
+    image:mysql
 
     # Environment variables for startup script
     # container will use these variables

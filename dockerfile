@@ -1,14 +1,16 @@
 FROM golang:1.16.3-alpine
+RUN apk add --no-cache git
 
-RUN mkdir /go-crud
 
-WORKDIR /go-crud
+WORKDIR /app/goapp
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+COPY . .
 
-COPY . /go-crud
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go build -o ./out/goapp .
 
 EXPOSE 10000
 
-CMD["go","run","main.go"]
+CMD ["./out/goapp"]
